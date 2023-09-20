@@ -1,0 +1,190 @@
+<% include ./partials/header.ejs %>
+  <div class="relative w-full min-h-screen bg-zinc-900 text-white py-5 overflow-hidden">
+
+    <div class="w-full px-4 flex items-center justify-between">
+      <img class="w-1/4" src="/images/logo.png" alt="">
+      <div class="icons -mt-2 flex gap-5 items-center">
+        <a href="/messageList"><i class="text-[1.4rem] ri-messenger-line"></i></a>
+      </div>
+    </div>
+    <div class="story px-3 flex gap-3 overflow-auto mt-5">
+
+      <%if(user.stories.length === 0){ %>
+        <a href="/upload" class="circle flex-shrink-0">
+          <div class="gradient w-[18vw] h-[18vw] relative rounded-full flex items-center justify-center">
+            <div class="inner w-[100%] h-[100%] rounded-full overflow-hidden">
+              <img class="image w-full h-full object-cover"
+                src="/images/uploads/<%=user.profileImage%>"
+                alt="">
+            </div>
+              <i class="ri-add-fill absolute top-[74%] right-[8%] scale-[1.8] text-blue-500"></i>
+          </div>
+        </a>
+      <% } else{%>
+      <a href="/story/<%=user._id%>" class="circle flex-shrink-0">
+        <div class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
+          <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
+            <img class="image w-full h-full object-cover"
+              src="/images/uploads/<%=user.profileImage%>"
+              alt="">
+          </div>
+        </div>
+      </a>
+      <%}%>
+      <% stories.forEach(story =>{ %>
+        <a href="/story/<%=story.user._id%>" class="circle flex-shrink-0">
+          <div class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
+            <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
+              <img class="image w-full h-full object-cover"
+                src="/images/uploads/<%=story.user.profileImage%>"
+                alt="">
+            </div>
+          </div>
+        </a>
+      <% })%>
+      
+    </div>
+    <div class="posts mb-20">
+      <%posts.reverse().forEach(function(post){ %>
+        <div class="post mt-10 w-full min-h-[50vh]">
+          <div class="title px-4 flex items-center gap-2">
+            <div class="w-[9vw] h-[9vw] overflow-hidden rounded-full">
+              <img class="image w-full h-full object-cover" src="/images/uploads/<%= post.user.profileImage %>" alt="">
+            </div>
+            <a href="/profile/<%=post.user._id%>" class="text-sm"><%= post.user.username %></a>
+            <h6 class="text-xs opacity-30 mt-1"><%=post.duration%></h6>
+          </div>
+          <div class="relative w-full h-[auto] mt-4 overflow-hidden">
+            <img class="image w-full h-full object-cover" src="/images/uploads/<%= post.picture %>" alt="">
+          </div>
+          <div class="options w-full px-4 flex justify-between items-center text-[1.4rem]">
+            <div class="flex gap-3 mt-2">
+            <% const likesIds = post.likes.map(like => like.toString()); if(likesIds.includes(user._id.toString())){ %>
+                <i data-postid="<%=post._id%>" class="heart text-red-500 ri-heart-3-fill"></i>
+                <% }else{ %>
+                  <i data-postid="<%=post._id%>" class="heart ri-heart-3-line"></i>
+            <% } %>
+              <a href="/comment/<%=post._id%>"><i class="ri-chat-3-line"></i></a>
+              <i class="share ri-share-circle-line"></i>
+            </div>
+            <% if(user.saved.indexOf(post._id) === -1){ %>
+              <i data-postid="<%=post._id%>" class="save ri-bookmark-line"></i>
+            <% } else{ %>
+              <i data-postid="<%=post._id%>" class="save ri-bookmark-fill"></i>
+            <% } %>
+          </div>
+          <h3 class="likesLength px-4 mt-2 text-sm leading-none tracking-tight"><%=post.likes.length%> likes</h3>
+          <h2 class="text-white font-light text-sm mt-2"><a href="/profile/<%=post.user._id%>" class="font-semibold pl-4 pr-2"><%= post.user.username %></a><%= post.caption %></h2>
+        </div>
+      <% }) %>
+    </div>
+
+  </div>
+  <div id="share" class="h-[85vh] w-full bg-zinc-800 fixed bottom-[-100vh]">
+    <div class="border-2 border-zinc-600 flex items-center justify-between px-2 py-1 mt-3 mx-3 rounded-md">
+      <i class="text-white ri-search-line"></i>
+      <input id="searchInp" class="ml-1 w-full bg-transparent outline-none text-zinc-400" type="text" placeholder="search username">
+    </div>
+    <div class="users">
+      <% if(messageUserArray.length===0){ %>
+        <h1 class="text-zinc-400 mx-auto w-fit mt-[35vh] text-2xl">Make some friends</h1>
+    <% }else{ %>
+        <%messageUserArray.reverse().forEach(friend=>{%>
+            <a href="/message/<%=friend._id%>" class="outline-none">
+                <div class="text-white flex items-center gap-2 mt-3">
+                    <div class="image w-[11vw] h-[11vw] rounded-full overflow-hidden">
+                        <img class="w-full h-full object-cover" src="/images/uploads/<%=friend.profileImage%>" alt="">
+                    </div>
+                    <div class="text">
+                        <h3><%=friend.username%></h3>
+                        <h4 class="text-xs opacity-30 leading-none"><%=friend.name%></h4>
+                    </div>
+                </div>            
+            </a>
+        <%})%>
+    <% } %>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+
+    function stopScrolling() {
+        document.body.style.overflow = 'hidden';
+    }
+    function enableScrolling() {
+        document.body.style.overflow = '';
+    }
+
+
+
+    document.querySelector('.posts')
+    .addEventListener('click',function(dets){
+
+      if(dets.target.classList.contains('heart')){
+        var heart = dets.target
+          heart.classList.toggle('ri-heart-3-line')
+          heart.classList.toggle('ri-heart-3-fill')
+          heart.classList.toggle('text-red-500')
+          fetch(`/like/${heart.dataset.postid}`)
+          .then(raw => raw.json())
+          .then(data => {
+            dets.target.parentNode.parentNode.parentNode.querySelector('.likesLength').textContent = data.likes.length + ' likes';
+          })
+      }
+
+      if(dets.target.classList.contains('image')){
+        dets.target.parentNode.parentNode.querySelector('.heart').click()
+        var i = document.createElement('i')
+        i.classList.add('ri-heart-3-fill','scale-[2]','absolute','translate-y-[-50%]','translate-x-[-50%]','left-[50%]','top-[60%]')
+        dets.target.parentNode.appendChild(i)
+        gsap.from(i,{
+          scale:.5,
+          y:-50,
+          ease:Power4,
+          duration:.3
+        })
+        gsap.to(i,{
+          opacity:.8,
+          y:-50,
+          scale:5,
+          delay:.2,
+          ease:Power4,
+          duration:.5,
+          color:'red',
+          onComplete:function(){
+            i.remove()
+          }
+        })
+      }
+
+      if(dets.target.classList.contains('save')){
+        var save = dets.target
+        save.classList.toggle('ri-bookmark-line')
+        save.classList.toggle('ri-bookmark-fill')
+        fetch(`/save/${save.dataset.postid}`)
+      }
+
+      // if(dets.target.classList.contains('share')){
+      //   var sharePage = document.querySelector('#share')
+      //   gsap.to(share,{
+      //     bottom:'0vh',
+      //     onComplete:function(){
+      //       // stopScrolling()
+      //     }
+      //   })
+      // }
+
+    })
+
+
+
+
+
+
+
+
+
+
+  </script>
+  <% include ./partials/footer.ejs %>
