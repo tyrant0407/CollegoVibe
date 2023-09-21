@@ -1,0 +1,51 @@
+<% include ./partials/header.ejs %>
+  <div class="w-full min-h-screen bg-zinc-900 text-white py-5">
+    <div class="flex justify-between items-center px-4">
+      <a class="text-sm text-blue-500" href="/profile"><i class="ri-arrow-left-s-line"></i> profile</a>
+      <h2 class="leading-none text-sm">Upload Post</h2>
+      <a class="text-sm" href="/feed"><i class="ri-home-line"></i> home</a>
+    </div>
+    <div class="flex gap-6 text-xl justify-center my-8">
+      <div class="post border-b-2">Post</div>
+      <div class="story opacity-20">Story</div>
+    </div>
+    
+    
+    
+    
+    <form id="uploadform" action="/upload" class="w-full px-6 py-3 mt-10" enctype="multipart/form-data" method="post">
+        <input hidden id="post" name="catagory" type="radio" value="post" checked>
+        <input hidden id="story" name="catagory" type="radio" value="story">
+        <input id="imageinp" hidden type="file" onchange="previewImage(event)" name="image">
+        <textarea id="caption" class="px-2 py-1 w-full bg-zinc-900 border-2 h-20 border-zinc-800 resize-none rounded-md outline-none" placeholder="Write a caption..." name="caption"></textarea>
+        <input class="w-full px-2 py-2 bg-blue-500 rounded-md mb-[10vw]" type="submit" value="Post">
+    </form>
+  </div>
+
+  <script>
+    
+    
+    document.querySelector(".post")
+    .addEventListener("click", function(){
+      document.querySelector("#post").click();
+      document.querySelector(".post").classList.add('border-b-2')
+      document.querySelector(".post").classList.remove('opacity-20')
+      document.querySelector(".story").classList.remove('border-b-2')
+      document.querySelector(".story").classList.add('opacity-20')
+      document.querySelector('#caption').removeAttribute('hidden')
+    });
+    document.querySelector(".story")
+    .addEventListener("click", function(){
+      document.querySelector("#story").click();
+      document.querySelector('#caption').setAttribute('hidden',true)
+      document.querySelector(".story").classList.add('border-b-2')
+      document.querySelector(".post").classList.remove('border-b-2')
+      document.querySelector(".post").classList.add('opacity-20')
+      document.querySelector(".story").classList.remove('opacity-20')
+    });
+
+
+    
+    
+  </script>
+<% include ./partials/footer.ejs %>
