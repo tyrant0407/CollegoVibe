@@ -1,0 +1,107 @@
+<% include ./partials/header.ejs %>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<style>
+  html,
+  body {
+    position: relative;
+    height: 100%;
+  }
+
+  body {
+    background: #eee;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #000;
+    margin: 0;
+    padding: 0;
+  }
+
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
+  <div class="relative w-full min-h-screen bg-zinc-900 text-white py-5 overflow-hidden">
+    <div class="absolute flex items-center justify-center h-[100vh] w-full bg-zinc-900 bg-opacity-95 z-10">
+      <div class="absolute top-2 w-full title px-4 flex items-center gap-2 z-[10]">
+        <a class="text-4xl ml-[-4vw]" href="/feed"><i class="ri-arrow-left-s-line"></i></a>
+        <div class="w-[10vw] h-[10vw] flex items-center overflow-hidden rounded-full">
+          <img class="image w-full h-full object-cover" src="/images/uploads/<%=storyUser.profileImage%>" alt="">
+        </div>
+        <a href="/profile/<%=storyUser._id%>" class="text-xl"><%=storyUser.username%></a>
+        <h6 class="duration text-xs opacity-50 mt-1"></h6>
+      </div>
+      <div class="image w-[100vw] h-[100vh] mt-[-10%] overflow-hidden">
+        
+        <div class="swiper mySwiper">
+          <div class="timer h-[3px] w-full bg-sky-100"></div>
+          <div class="swiper-wrapper">
+            <% stories.forEach(story =>{ %>
+              <div data-story="<%=stories.length%>" data-duration="<%=story.duration%>" class="swiper-slide"><img class="h-full w-full object-cover" src="/images/uploads/<%= story.picture %>" alt=""></div>
+            <% })%>
+          </div>
+          <div style="opacity: 0;" onclick="loading()" class="swiper-button-next next"></div>
+          <div style="opacity: 0;" class="swiper-button-prev prev"></div>
+        </div>
+        </swiper-container>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      pagination: {
+        el: ".swiper-pagination",
+        type: "progressbar",
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+
+
+    var length = document.querySelector('.swiper-slide').dataset.story
+    var click = 0
+    var allSlide = document.querySelectorAll('.swiper-slide')
+    var duration = document.querySelector('.duration')
+
+    function loading(){
+      var tl = gsap.from('.timer',{
+      width:0,
+      duration:3,
+      onStart:function(){
+        duration.textContent = allSlide[click].dataset.duration
+      },
+      onComplete:function(){
+        if(click<length-1){
+          document.querySelector('.next').click();
+          click++;
+        } 
+        else{
+          window.location.href = "/feed";
+        }
+      },
+      })
+    }
+    loading();
+  </script>
+  <% include ./partials/footer.ejs %>
