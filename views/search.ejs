@@ -1,0 +1,38 @@
+<% include ./partials/header.ejs %>
+  <div class="w-full min-h-screen bg-zinc-900 px-4 py-5">
+    <div class="border-2 border-zinc-800 flex items-center justify-between px-2 py-1 rounded-md">
+        <i class="text-white ri-search-line"></i>
+        <input id="searchInp" class="ml-1 w-full bg-zinc-900 outline-none text-zinc-400" type="text" placeholder="search username">
+    </div>
+    <div class="users">
+        
+    </div>
+  </div>
+
+  <script>
+    var search = document.querySelector('#searchInp')
+    search.addEventListener('input',function(){
+        if(search.value !== ""){
+            fetch(`/search/${search.value}`)
+        .then(raw => raw.json())
+        .then(users => {
+            var structure = ""
+            users.forEach(user => {
+                structure+=`<a href="/profile/${user._id}" class="outline-none">
+                    <div class="text-white flex items-center gap-2 mt-5">
+                        <div class="image w-[11vw] h-[11vw] rounded-full overflow-hidden">
+                            <img class="w-full h-full object-cover" src="/images//uploads/${user.profileImage}" alt="">
+                        </div>
+                        <div class="text">
+                            <h3>${user.username}</h3>
+                            <h4 class="text-xs opacity-30 leading-none">${user.name}</h4>
+                        </div>
+                    </div>            
+                    </a>`
+            });
+            document.querySelector('.users').innerHTML = structure;
+        })
+        }
+    })
+  </script>
+<% include ./partials/footer.ejs %>
