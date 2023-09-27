@@ -1,0 +1,36 @@
+<% include ./partials/header.ejs %>
+  <div class="w-full min-h-screen bg-zinc-900 px-4 py-5">
+    <div class="flex gap-1 items-center">
+        <a href="/feed">
+            <i class="ri-arrow-drop-left-line text-3xl text-blue-500"></i>
+        </a>
+        <h1 class="text-white text-xl mt-[-1vw]">Messages</h1>
+    </div>
+    <div class="users">
+
+        <% if(messageUserArray.length===0){ %>
+            <h1 class="text-zinc-400 mx-auto w-fit mt-[35vh] text-2xl">Make some friends</h1>
+        <% }else{ %>
+            <%messageUserArray.reverse().forEach(friend=>{%>
+                <a href="/message/<%=friend._id%>" class="outline-none">
+                    <div class="text-white flex items-center gap-2 mt-3">
+                        <div class="image w-[11vw] h-[11vw] rounded-full overflow-hidden">
+                            <img class="w-full h-full object-cover" src="/images/uploads/<%=friend.profileImage%>" alt="">
+                        </div>
+                        <div class="text">
+                            <h3><%=friend.username%></h3>
+                            <h4 class="text-xs opacity-30 leading-none"><%=friend.name%></h4>
+                        </div>
+                    </div>            
+                </a>
+            <%})%>
+        <% } %>
+
+        
+    </div>
+  </div>
+
+  <script>
+   
+  </script>
+<% include ./partials/footer.ejs %>
