@@ -1,0 +1,148 @@
+<% include ./partials/header.ejs %>
+
+<style>
+
+body {
+      background-color: #030303;
+    }
+
+    .comment-container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding-top: 17vw ;
+      padding-bottom: 25vw ;
+    }
+
+    .comment {
+      background-color: #232222;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .comment-user {
+      color: #B7B7B7;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .comment-content {
+      color: #FFFFFF;
+      margin-bottom: 5px;
+    }
+
+    .comment-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    .comment-action {
+      margin-right: 10px;
+      color: #B7B7B7;
+      cursor: pointer;
+    }
+
+    .comment-input {
+      background-color: #232222;
+      border-radius: 10px;
+      padding: 10px;
+      margin-top: 10px;
+      display: flex;
+    }
+
+    .comment-input input[type="text"] {
+      width: calc(100% - 90px);
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #333333;
+      color: #FFFFFF;
+      margin-right: 10px;
+    }
+
+    .comment-input .button {
+      padding: 10px 20px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+
+
+
+</style>
+
+  <div class="relative w-full min-h-screen bg-zinc-900 text-white pb-5">
+
+    <div style="backdrop-filter: blur(3px);" class="text-2xl my-[-6%] font-semibold fixed z-[9] bg-zinc-900 bg-opacity-60 p-5 w-full">Comments</div>
+
+
+  
+
+    <div class="comment-container relative">
+
+
+      <%if(post.comments.length === 0 ){ %>
+
+        <div class="text-2xl absolute top-[25vh] left-[25vw] h-[60vh]">No Comment Yet</div>
+
+      <%}else{ %>
+        <% post.comments.forEach(comment=>{ %>
+          <div class="comment relative">
+            <a href="/profile/<%=comment.user._id %>" class="comment-user text-xl"><%=comment.user.username%></a href="<%=comment.user._id%>">
+            <div class="comment-content"><%=comment.comment%></div>
+            <% if(user._id.toString()===comment.user._id.toString()){ %>
+              <a href="/delete/comment/<%=comment._id%>" class="delete absolute top-6 right-14">
+                <i class="ri-delete-bin-line"></i>
+              </a>
+            <% } %>
+            <div class="likes absolute right-6 top-6">
+              <a href="/like/comment/<%=comment._id%>">
+                <%if(comment.likes.includes(user.username)){%>
+                  
+                  <i class="ri-heart-3-fill text-red-500"></i>
+                <%}else{%>
+                  <i class="ri-heart-3-line"></i>
+                  
+                <%}%>
+              </a>
+              <div class="likeNumber text-sm ml-[4px]"><%=comment.likes.length%></div>
+            </div>
+          </div>
+
+        <%}) %>
+      <%} %>
+
+
+
+    </div>
+    
+    <!-- New Comment Input -->
+    <form style="position: fixed; bottom: 7%; width: 100%;" class="comment-input" action="/commentPost/<%=post._id%>" method="post">
+      <input name="newComment" type="text" placeholder="Add a comment...">
+      <input type="submit" class="button bg-blue-500" value="submit">
+    </form>
+    
+
+
+    <script>
+
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+      const scrollPosition = localStorage.getItem('scrollPosition');
+      if (scrollPosition) {
+        window.scrollTo(0, parseInt(scrollPosition));
+      }
+    });
+
+    window.addEventListener('beforeunload', (event) => {
+      localStorage.setItem('scrollPosition', window.scrollY.toString());
+    });
+
+    </script>
+
+  </div>
+
+  <% include ./partials/footer.ejs %>
