@@ -1,0 +1,94 @@
+<% include ./partials/header.ejs %>
+    <div class="w-full min-h-screen bg-zinc-900 py-5 text-white overflow-hidden h-[100vh]">
+        <div class="flex items-center gap-1 max-h-[6vh]">
+            <a href="/messageList">
+                <i class="ri-arrow-drop-left-line text-3xl text-blue-500"></i>
+            </a>
+            <a href="/profile/<%=oppositeUser._id%>" class="flex items-center gap-2">
+                <img src="/images/uploads/<%=oppositeUser.profileImage%>" class="w-[10%] rounded-full" alt="">
+                <div class="">
+                    <%=oppositeUser.username%>
+                </div>
+            </a>
+        </div>
+
+        <div class="mt-3">
+            <div class="chatArea w-full h-[83vh] flex flex-col gap-2 px-2 py-1 overflow-y-auto">
+
+
+
+            </div>
+
+            <div class="inputArea-0 pl-1 border-zinc-600 w-full h-[6vh] flex items-center justify-around">
+                <input class="bg-transparent w-[80%] h-[70%] border-[1px] rounded-md border-zinc-600 focus:border-zinc-400 outline-none px-2"
+                    type="text" placeholder="Enter a message..." id=
+                    "msgInp">
+                <button class="bg-blue-400 rounded-lg px-3 py-1 " onclick="sendMsg()">Send</button>
+            </div>
+        </div>
+
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        var socket = io();
+        var loggedInUser = "<%=user.username%>"
+        var oppositeUser = "<%=oppositeUser.username%>"
+
+        socket.emit('joinUser', loggedInUser)
+
+        function sendMsg() {
+            var inp = document.querySelector('#msgInp')
+            var message = inp.value.trim()
+            inp.value = ""
+            const messageObject = {
+                sender: loggedInUser,
+                receiver: oppositeUser,
+                message
+            }
+            socket.emit('messageByUser', messageObject)
+            appendOutMsg(message)
+        }
+
+        function appendOutMsg(message) {
+            if (message !== "") {
+                var temp = `<div class="flex justify-end">
+                    <div class="bg-zinc-600 p-2 rounded-md rounded-br-none max-w-[65%]">${message}</div>
+                </div>`
+                document.querySelector('.chatArea').innerHTML += temp;
+            }
+        }
+
+        function appendInMsg(message) {
+            message = message.trim();
+            if (message !== "") {
+
+                var temp = `<div class="flex justify-start">
+                    <div class="bg-blue-500 p-2 rounded-md rounded-bl-none max-w-[65%]">${message}</div>
+                </div>`
+                document.querySelector('.chatArea').innerHTML += temp;
+            }
+        }
+
+
+        socket.on('messageByServer', messageObject => {
+            if (messageObject.sender === oppositeUser) {
+                appendInMsg(messageObject.message)
+            }
+        })
+
+
+        fetch(`/getMessage/${oppositeUser}`).then(raw => raw.json())
+            .then(messagesArray => {
+                messagesArray.forEach(messageObj => {
+                    if (messageObj.sender === loggedInUser) {
+                        appendOutMsg(messageObj.message)
+                    }
+                    else{
+                        appendInMsg(messageObj.message)
+                    }
+                })
+            })
+
+    </script>
+    <% include ./partials/footer.ejs %>
