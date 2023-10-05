@@ -1,8 +1,7 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.story::-webkit-scrollbar{
+  display: none;
 }
 
-a {
-  color: #00B7FF;
+a:focus {
+  outline: none !important;
 }
