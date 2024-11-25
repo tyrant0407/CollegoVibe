@@ -1,0 +1,6 @@
+{"level":"info","message":"\u001b[0mGET / \u001b[32m200 \u001b[0m10.984 ms - 1710\u001b[0m","timestamp":"2024-11-25T05:33:59.107Z"}
+{"level":"info","message":"\u001b[0mGET /stylesheets/style.css \u001b[32m200 \u001b[0m3.491 ms - 92\u001b[0m","timestamp":"2024-11-25T05:33:59.164Z"}
+{"level":"info","message":"\u001b[0mGET /images/collegoVibe.png \u001b[32m200 \u001b[0m2.226 ms - 23127\u001b[0m","timestamp":"2024-11-25T05:33:59.183Z"}
+{"level":"info","message":"\u001b[0mGET /images/logo.png \u001b[32m200 \u001b[0m2.589 ms - 45841\u001b[0m","timestamp":"2024-11-25T05:33:59.184Z"}
+{"level":"info","message":"\u001b[0mGET /images/collegoVibe.png \u001b[36m304 \u001b[0m1.304 ms - -\u001b[0m","timestamp":"2024-11-25T05:33:59.683Z"}
+{"level":"info","message":"\u001b[0mGET /stylesheets/style.css \u001b[36m304 \u001b[0m0.596 ms - -\u001b[0m","timestamp":"2024-11-25T05:34:02.632Z"}

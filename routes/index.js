@@ -11,6 +11,7 @@ const upload = require('./multer.js')
 const { name } = require('ejs');
 const utils = require('./utils.js');
 const bcrypt = require('bcrypt');
+const logger = require('../utils/logger');
 
 
 passport.use(new localStrategy(userModel.authenticate()));
@@ -23,53 +24,65 @@ router.get('/login', function(req, res) {
   res.render('login.ejs', {footer: false});
 });
 
-router.get('/feed', isLoggedIn, async function(req, res) {
-  try {
-    var user = await userModel.findOne({ username: req.session.passport.user }).populate('followings').populate('followers')
-    var posts = await postModel.find().populate('user')
-    var stories = await storyModel.find({ user: { $ne: user._id } }).populate('user')
+// Wrapper for async route handlers
+const asyncHandler = fn => (req, res, next) => {
+  Promise.resolve(fn(req, res, next)).catch(next);
+};
 
-    const postcopy = posts
-    // .filter(post => post.user._id.toString() === user._id.toString() || user.followings.some(id => id.toString() === post.user._id.toString()))
-    .map(post => ({ ...post.toObject(), duration: utils.getTimeDifferenceFromNow(new Date(post.date)) }));
-
-
-    const obj = {};
-    const newStories = stories
-    // .filter(story => (story.user._id.toString() === user._id.toString() || user.followings.some(id => id.toString() === story.user._id.toString())))
-    .filter(story => {
-        if (!obj[story.user._id]) {
-            obj[story.user._id] = " ";
-            return true;
-        } else {
-            return false;
-        }
+router.get('/feed', isLoggedIn, asyncHandler(async (req, res) => {
+  const user = await userModel.findOne({ username: req.session.passport.user })
+    .populate('followings')
+    .populate('followers');
+    
+  if (!user) {
+    logger.error('User not found in feed route', {
+      username: req.session.passport.user
     });
-
-
-
-    const combinedArray = user.followings.concat(user.followers);
-    
-    const objectMap = new Map();
-    
-    // Iterate through the array of objects
-    combinedArray.forEach(obj => {
-        // If the ID is not in the map, add the object to the map
-        if (!objectMap.has(obj._id.toString())) {
-            objectMap.set(obj._id.toString(), obj);
-        }
-    });
-    
-    // Convert the map values back to an array
-    const messageUserArray = Array.from(objectMap.values());
-
-
-    res.render('feed.ejs', { footer: true, user, posts: postcopy, stories:newStories,messageUserArray });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
+    throw new Error('User not found');
   }
-});
+
+  const posts = await postModel.find().populate('user');
+  const stories = await storyModel
+    .find({ user: { $ne: user._id } })
+    .populate('user');
+
+  const postcopy = posts
+  // .filter(post => post.user._id.toString() === user._id.toString() || user.followings.some(id => id.toString() === post.user._id.toString()))
+  .map(post => ({ ...post.toObject(), duration: utils.getTimeDifferenceFromNow(new Date(post.date)) }));
+
+
+  const obj = {};
+  const newStories = stories
+  // .filter(story => (story.user._id.toString() === user._id.toString() || user.followings.some(id => id.toString() === story.user._id.toString())))
+  .filter(story => {
+      if (!obj[story.user._id]) {
+          obj[story.user._id] = " ";
+          return true;
+      } else {
+          return false;
+      }
+  });
+
+
+
+  const combinedArray = user.followings.concat(user.followers);
+  
+  const objectMap = new Map();
+  
+  // Iterate through the array of objects
+  combinedArray.forEach(obj => {
+      // If the ID is not in the map, add the object to the map
+      if (!objectMap.has(obj._id.toString())) {
+          objectMap.set(obj._id.toString(), obj);
+      }
+  });
+  
+  // Convert the map values back to an array
+  const messageUserArray = Array.from(objectMap.values());
+
+
+  res.render('feed.ejs', { footer: true, user, posts: postcopy, stories:newStories,messageUserArray });
+}));
 
 router.get('/savedPost', isLoggedIn, async function(req, res) {
   try {

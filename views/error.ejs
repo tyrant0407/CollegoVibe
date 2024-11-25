@@ -1,3 +1,18 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<% include ./partials/header.ejs %>
+<div class="w-full min-h-screen bg-zinc-900 text-white py-5 flex flex-col items-center justify-center">
+  <div class="flex flex-col items-center gap-5 px-4">
+    <h1 class="text-2xl"><%= message %></h1>
+    <% if (error.status) { %>
+      <h2 class="text-xl">Status: <%= error.status %></h2>
+    <% } %>
+    <% if (process.env.NODE_ENV === 'development' && error.stack) { %>
+      <pre class="mt-4 p-4 bg-zinc-800 rounded overflow-auto max-w-full">
+        <%= error.stack %>
+      </pre>
+    <% } %>
+    <a href="/" class="mt-8 px-6 py-2 bg-blue-500 rounded-md">
+      Return Home
+    </a>
+  </div>
+</div>
+<% include ./partials/footer.ejs %>
