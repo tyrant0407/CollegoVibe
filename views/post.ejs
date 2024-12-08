@@ -1,28 +1,27 @@
 <% include ./partials/header.ejs %>
   <div class="relative w-full min-h-screen bg-zinc-900 text-white py-5">
-
-    <div class="w-full px-4 flex items-center justify-between">
-      <img class="w-1/4" src="/images/logo.png" alt="">
+    <div class="w-full px-4 flex items-center justify-between max-w-6xl mx-auto">
+      <img class="w-1/4 md:w-32" src="/images/logo.png" alt="">
     </div>
-    <div class="posts mb-20">
+    <div class="posts mb-20 max-w-2xl mx-auto">
         <div class="post mt-10 w-full min-h-[50vh]">
           <div class="title px-4 flex items-center gap-2">
-            <div class="w-[9vw] h-[9vw] overflow-hidden rounded-full">
+            <div class="w-[9vw] h-[9vw] md:w-12 md:h-12 overflow-hidden rounded-full">
               <img class="image w-full h-full object-cover" src="/images/uploads/<%= post.user.profileImage %>" alt="">
             </div>
-            <a href="/profile/<%=post.user._id%>" class="text-sm"><%= post.user.username %></a>
-            <h6 class="text-xs opacity-30 mt-1"><%=post.duration%></h6>
+            <a href="/profile/<%=post.user._id%>" class="text-sm md:text-base"><%= post.user.username %></a>
+            <h6 class="text-xs md:text-sm opacity-30 mt-1"><%=post.duration%></h6>
           </div>
           <div class="relative w-full h-auto mt-4 overflow-hidden">
-            <img class="image w-full h-full object-cover" src="/images/uploads/<%= post.picture %>" alt="">
+            <img class="image w-full h-full object-cover md:rounded-lg" src="/images/uploads/<%= post.picture %>" alt="">
           </div>
-          <div class="options w-full px-4 flex justify-between items-center text-[1.4rem]">
+          <div class="options w-full px-4 flex justify-between items-center text-[1.4rem] md:text-[1.6rem]">
             <div class="flex gap-3 mt-2">
-            <% const likesIds = post.likes.map(like => like.toString()); if(likesIds.includes(user._id.toString())){ %>
+              <% const likesIds = post.likes.map(like => like.toString()); if(likesIds.includes(user._id.toString())){ %>
                 <i data-postid="<%=post._id%>" class="heart text-red-500 ri-heart-3-fill"></i>
-                <% }else{ %>
-                  <i data-postid="<%=post._id%>" class="heart ri-heart-3-line"></i>
-            <% } %>
+              <% }else{ %>
+                <i data-postid="<%=post._id%>" class="heart ri-heart-3-line"></i>
+              <% } %>
               <a href="/comment/<%=post._id%>"><i class="ri-chat-3-line"></i></a>
               <i class="ri-share-circle-line"></i>
             </div>
@@ -32,8 +31,11 @@
               <i data-postid="<%=post._id%>" class="save ri-bookmark-fill"></i>
             <% } %>
           </div>
-          <h3 class="likesLength px-4 mt-2 text-sm leading-none tracking-tight"><%=post.likes.length%> likes</h3>
-          <h2 class="text-white font-light text-sm mt-2"><a href="/profile/<%=post.user._id%>" class="font-semibold pl-4 pr-2"><%= post.user.username %></a><%= post.caption %></h2>
+          <h3 class="likesLength px-4 mt-2 text-sm md:text-base leading-none tracking-tight"><%=post.likes.length%> likes</h3>
+          <h2 class="text-white font-light text-sm md:text-base mt-2">
+            <a href="/profile/<%=post.user._id%>" class="font-semibold pl-4 pr-2"><%= post.user.username %></a>
+            <%= post.caption %>
+          </h2>
         </div>
     </div>
   </div>

@@ -10,15 +10,7 @@ const logger = winston.createLogger({
   transports: [
     // Write all logs to console
     new winston.transports.Console(),
-    // Write all errors to error.log
-    new winston.transports.File({ 
-      filename: path.join(__dirname, '../logs/error.log'), 
-      level: 'error' 
-    }),
-    // Write all logs to combined.log
-    new winston.transports.File({ 
-      filename: path.join(__dirname, '../logs/combined.log')
-    })
+  
   ]
 });
 

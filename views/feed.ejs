@@ -1,17 +1,16 @@
 <% include ./partials/header.ejs %>
   <div class="relative w-full min-h-screen bg-zinc-900 text-white py-5 overflow-hidden">
-
-    <div class="w-full px-4 flex items-center justify-between">
-      <img class="w-[30vw]" src="/images/image.png" alt="">
+    <div class="w-full px-4 flex items-center justify-between max-w-6xl mx-auto">
+      <img class="w-[30vw] md:w-32" src="/images/image.png" alt="">
       <div class="icons -mt-2 flex gap-5 items-center">
-        <a href="/messageList"><i class="text-[1.4rem] ri-messenger-line"></i></a>
+        <a href="/messageList"><i class="text-[1.4rem] md:text-[1.6rem] ri-messenger-line"></i></a>
       </div>
     </div>
-    <div class="story px-3 flex gap-3 overflow-auto mt-5">
 
+    <div class="story px-3 md:px-8 flex gap-3 overflow-auto mt-5 max-w-6xl mx-auto">
       <%if(user.stories.length === 0){ %>
         <a href="/upload" class="circle flex-shrink-0">
-          <div class="gradient w-[18vw] h-[18vw] relative rounded-full flex items-center justify-center">
+          <div class="gradient w-[18vw] h-[18vw] md:w-20 md:h-20 relative rounded-full flex items-center justify-center">
             <div class="inner w-[100%] h-[100%] rounded-full overflow-hidden">
               <img class="image w-full h-full object-cover"
                 src="/images/uploads/<%=user.profileImage%>"
@@ -21,19 +20,20 @@
           </div>
         </a>
       <% } else{%>
-      <a href="/story/<%=user._id%>" class="circle flex-shrink-0">
-        <div class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
-          <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
-            <img class="image w-full h-full object-cover"
-              src="/images/uploads/<%=user.profileImage%>"
-              alt="">
+        <a href="/story/<%=user._id%>" class="circle flex-shrink-0">
+          <div class="gradient w-[18vw] h-[18vw] md:w-20 md:h-20 bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
+            <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
+              <img class="image w-full h-full object-cover"
+                src="/images/uploads/<%=user.profileImage%>"
+                alt="">
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
       <%}%>
+
       <% stories.forEach(story =>{ %>
         <a href="/story/<%=story.user._id%>" class="circle flex-shrink-0">
-          <div class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
+          <div class="gradient w-[18vw] h-[18vw] md:w-20 md:h-20 bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
             <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
               <img class="image w-full h-full object-cover"
                 src="/images/uploads/<%=story.user.profileImage%>"
@@ -42,28 +42,28 @@
           </div>
         </a>
       <% })%>
-      
     </div>
-    <div class="posts mb-20">
+
+    <div class="posts mb-20 max-w-2xl mx-auto">
       <%posts.reverse().forEach(function(post){ %>
         <div class="post mt-10 w-full min-h-[50vh]">
           <div class="title px-4 flex items-center gap-2">
-            <div class="w-[9vw] h-[9vw] overflow-hidden rounded-full">
+            <div class="w-[9vw] h-[9vw] md:w-12 md:h-12 overflow-hidden rounded-full">
               <img class="image w-full h-full object-cover" src="/images/uploads/<%= post.user.profileImage %>" alt="">
             </div>
-            <a href="/profile/<%=post.user._id%>" class="text-sm"><%= post.user.username %></a>
-            <h6 class="text-xs opacity-30 mt-1"><%=post.duration%></h6>
+            <a href="/profile/<%=post.user._id%>" class="text-sm md:text-base"><%= post.user.username %></a>
+            <h6 class="text-xs md:text-sm opacity-30 mt-1"><%=post.duration%></h6>
           </div>
           <div class="relative w-full h-[auto] mt-4 overflow-hidden">
-            <img class="image w-full h-full object-cover" src="/images/uploads/<%= post.picture %>" alt="">
+            <img class="image w-full h-full object-cover md:rounded-lg" src="/images/uploads/<%= post.picture %>" alt="">
           </div>
-          <div class="options w-full px-4 flex justify-between items-center text-[1.4rem]">
+          <div class="options w-full px-4 flex justify-between items-center text-[1.4rem] md:text-[1.6rem]">
             <div class="flex gap-3 mt-2">
-            <% const likesIds = post.likes.map(like => like.toString()); if(likesIds.includes(user._id.toString())){ %>
+              <% const likesIds = post.likes.map(like => like.toString()); if(likesIds.includes(user._id.toString())){ %>
                 <i data-postid="<%=post._id%>" class="heart text-red-500 ri-heart-3-fill"></i>
-                <% }else{ %>
-                  <i data-postid="<%=post._id%>" class="heart ri-heart-3-line"></i>
-            <% } %>
+              <% }else{ %>
+                <i data-postid="<%=post._id%>" class="heart ri-heart-3-line"></i>
+              <% } %>
               <a href="/comment/<%=post._id%>"><i class="ri-chat-3-line"></i></a>
               <i class="share ri-share-circle-line"></i>
             </div>
@@ -73,36 +73,39 @@
               <i data-postid="<%=post._id%>" class="save ri-bookmark-fill"></i>
             <% } %>
           </div>
-          <h3 class="likesLength px-4 mt-2 text-sm leading-none tracking-tight"><%=post.likes.length%> likes</h3>
-          <h2 class="text-white font-light text-sm mt-2"><a href="/profile/<%=post.user._id%>" class="font-semibold pl-4 pr-2"><%= post.user.username %></a><%= post.caption %></h2>
+          <h3 class="likesLength px-4 mt-2 text-sm md:text-base leading-none tracking-tight"><%=post.likes.length%> likes</h3>
+          <h2 class="text-white font-light text-sm md:text-base mt-2">
+            <a href="/profile/<%=post.user._id%>" class="font-semibold pl-4 pr-2"><%= post.user.username %></a>
+            <%= post.caption %>
+          </h2>
         </div>
       <% }) %>
     </div>
 
-  </div>
-  <div id="share" class="h-[85vh] w-full bg-zinc-800 fixed bottom-[-100vh]">
-    <div class="border-2 border-zinc-600 flex items-center justify-between px-2 py-1 mt-3 mx-3 rounded-md">
-      <i class="text-white ri-search-line"></i>
-      <input id="searchInp" class="ml-1 w-full bg-transparent outline-none text-zinc-400" type="text" placeholder="search username">
-    </div>
-    <div class="users">
-      <% if(messageUserArray.length===0){ %>
-        <h1 class="text-zinc-400 mx-auto w-fit mt-[35vh] text-2xl">Make some friends</h1>
-    <% }else{ %>
-        <%messageUserArray.reverse().forEach(friend=>{%>
+    <div id="share" class="h-[85vh] w-full bg-zinc-800 fixed bottom-[-100vh]">
+      <div class="border-2 border-zinc-600 flex items-center justify-between px-2 py-1 mt-3 mx-3 rounded-md">
+        <i class="text-white ri-search-line"></i>
+        <input id="searchInp" class="ml-1 w-full bg-transparent outline-none text-zinc-400" type="text" placeholder="search username">
+      </div>
+      <div class="users px-4 md:px-8">
+        <% if(messageUserArray.length===0){ %>
+          <h1 class="text-zinc-400 mx-auto w-fit mt-[35vh] text-2xl">Make some friends</h1>
+        <% }else{ %>
+          <%messageUserArray.reverse().forEach(friend=>{%>
             <a href="/message/<%=friend._id%>" class="outline-none">
-                <div class="text-white flex items-center gap-2 mt-3">
-                    <div class="image w-[11vw] h-[11vw] rounded-full overflow-hidden">
-                        <img class="w-full h-full object-cover" src="/images/uploads/<%=friend.profileImage%>" alt="">
-                    </div>
-                    <div class="text">
-                        <h3><%=friend.username%></h3>
-                        <h4 class="text-xs opacity-30 leading-none"><%=friend.name%></h4>
-                    </div>
-                </div>            
+              <div class="text-white flex items-center gap-2 mt-3">
+                <div class="image w-[11vw] h-[11vw] md:w-12 md:h-12 rounded-full overflow-hidden">
+                  <img class="w-full h-full object-cover" src="/images/uploads/<%=friend.profileImage%>" alt="">
+                </div>
+                <div class="text">
+                  <h3 class="md:text-base"><%=friend.username%></h3>
+                  <h4 class="text-xs md:text-sm opacity-30 leading-none"><%=friend.name%></h4>
+                </div>
+              </div>            
             </a>
-        <%})%>
-    <% } %>
+          <%})%>
+        <% } %>
+      </div>
     </div>
   </div>
 

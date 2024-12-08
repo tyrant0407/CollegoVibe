@@ -13,11 +13,26 @@ body {
       padding-bottom: 25vw ;
     }
 
+    @media (min-width: 768px) {
+      .comment-container {
+        padding-top: 100px;
+        padding-bottom: 120px;
+        max-width: 800px;
+      }
+    }
+
     .comment {
       background-color: #232222;
       border-radius: 10px;
-      padding: 10px;
-      margin-bottom: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    @media (min-width: 768px) {
+      .comment {
+        padding: 20px;
+        margin-bottom: 20px;
+      }
     }
 
     .comment-user {
@@ -29,6 +44,13 @@ body {
     .comment-content {
       color: #FFFFFF;
       margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    @media (min-width: 768px) {
+      .comment-content {
+        font-size: 16px;
+      }
     }
 
     .comment-actions {
@@ -48,6 +70,16 @@ body {
       padding: 10px;
       margin-top: 10px;
       display: flex;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (min-width: 768px) {
+      .comment-input {
+        max-width: 800px;
+        padding: 15px;
+      }
     }
 
     .comment-input input[type="text"] {
@@ -67,6 +99,19 @@ body {
       border-radius: 5px;
       cursor: pointer;
       margin-top: 5px;
+      transition: background-color 0.2s;
+    }
+
+    @media (min-width: 768px) {
+      .comment-input input[type="text"] {
+        padding: 15px;
+        font-size: 16px;
+      }
+      
+      .comment-input .button {
+        padding: 15px 30px;
+        font-size: 16px;
+      }
     }
 
 
@@ -76,7 +121,7 @@ body {
 
   <div class="relative w-full min-h-screen bg-zinc-900 text-white pb-5">
 
-    <div style="backdrop-filter: blur(3px);" class="text-2xl my-[-6%] font-semibold fixed z-[9] bg-zinc-900 bg-opacity-60 p-5 w-full">Comments</div>
+    <div style="backdrop-filter: blur(3px);" class="text-2xl md:text-3xl my-[-6%] md:my-0 font-semibold fixed z-[9] bg-zinc-900 bg-opacity-60 p-5 w-full">Comments</div>
 
 
   
@@ -86,20 +131,20 @@ body {
 
       <%if(post.comments.length === 0 ){ %>
 
-        <div class="text-2xl absolute top-[25vh] left-[25vw] h-[60vh]">No Comment Yet</div>
+        <div class="text-2xl md:text-3xl absolute top-[25vh] left-[25vw] md:left-[35%] h-[60vh]">No Comment Yet</div>
 
       <%}else{ %>
         <% post.comments.forEach(comment=>{ %>
           <div class="comment relative">
-            <a href="/profile/<%=comment.user._id %>" class="comment-user text-xl"><%=comment.user.username%></a href="<%=comment.user._id%>">
+            <a href="/profile/<%=comment.user._id %>" class="comment-user text-xl md:text-2xl"><%=comment.user.username%></a>
             <div class="comment-content"><%=comment.comment%></div>
             <% if(user._id.toString()===comment.user._id.toString()){ %>
-              <a href="/delete/comment/<%=comment._id%>" class="delete absolute top-6 right-14">
+              <a href="/delete/comment/<%=comment._id%>" class="delete absolute top-6 right-14 md:right-16 hover:text-red-500 transition-colors">
                 <i class="ri-delete-bin-line"></i>
               </a>
             <% } %>
-            <div class="likes absolute right-6 top-6">
-              <a href="/like/comment/<%=comment._id%>">
+            <div class="likes absolute right-6 md:right-8 top-6">
+              <a href="/like/comment/<%=comment._id%>" class="hover:opacity-80 transition-opacity">
                 <%if(comment.likes.includes(user.username)){%>
                   
                   <i class="ri-heart-3-fill text-red-500"></i>
@@ -108,7 +153,7 @@ body {
                   
                 <%}%>
               </a>
-              <div class="likeNumber text-sm ml-[4px]"><%=comment.likes.length%></div>
+              <div class="likeNumber text-sm md:text-base ml-[4px]"><%=comment.likes.length%></div>
             </div>
           </div>
 
@@ -121,8 +166,8 @@ body {
     
     <!-- New Comment Input -->
     <form style="position: fixed; bottom: 7%; width: 100%;" class="comment-input" action="/commentPost/<%=post._id%>" method="post">
-      <input name="newComment" type="text" placeholder="Add a comment...">
-      <input type="submit" class="button bg-blue-500" value="submit">
+      <input name="newComment" type="text" placeholder="Add a comment..." class="focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <input type="submit" class="button bg-blue-500 hover:bg-blue-600" value="Submit">
     </form>
     
 

@@ -1,14 +1,14 @@
 <% if(footer){ %>
-    <div class="footer text-white flex justify-between items-center w-full fixed bottom-0 z-[10] bg-zinc-900 px-10 py-3">
-        <a href="/feed"><i class="text-[1.4rem] ri-home-line"></i></a>
-        <a href="/search"><i class="text-[1.4rem] ri-search-line"></i></a>
-        <a href="/upload"><i class="text-[1.4rem] ri-add-box-line"></i></a>
+    <div class="footer text-white flex justify-between items-center w-full fixed bottom-0 z-[10] bg-zinc-900 px-10 py-3 md:px-20 lg:px-32">
+        <a href="/feed"><i class="text-[1.4rem] md:text-[1.6rem] lg:text-[1.8rem] ri-home-line hover:text-blue-500 transition-colors"></i></a>
+        <a href="/search"><i class="text-[1.4rem] md:text-[1.6rem] lg:text-[1.8rem] ri-search-line hover:text-blue-500 transition-colors"></i></a>
+        <a href="/upload"><i class="text-[1.4rem] md:text-[1.6rem] lg:text-[1.8rem] ri-add-box-line hover:text-blue-500 transition-colors"></i></a>
         <a href="/profile">
-          <div class="w-6 h-6 rounded-full overflow-hidden">
+          <div class="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full overflow-hidden">
             <img class="h-full w-full object-cover" src="/images/uploads/<%=user.profileImage%>" alt="">
           </div>
         </a>
-      </div>
+    </div>
 <% } %>
 
 

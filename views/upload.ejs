@@ -1,29 +1,29 @@
 <% include ./partials/header.ejs %>
   <div class="w-full min-h-screen bg-zinc-900 text-white py-5">
-    <div class="flex justify-between items-center px-4">
-      <a class="text-sm text-blue-500" href="/profile"><i class="ri-arrow-left-s-line"></i> profile</a>
-      <h2 class="leading-none text-sm">Upload Post</h2>
-      <a class="text-sm" href="/feed"><i class="ri-home-line"></i> home</a>
+    <div class="flex justify-between items-center px-4 md:px-10 lg:px-20 md:max-w-3xl mx-auto">
+      <a class="text-sm md:text-base text-blue-500" href="/profile"><i class="ri-arrow-left-s-line"></i> profile</a>
+      <h2 class="leading-none text-sm md:text-lg">Upload Post</h2>
+      <a class="text-sm md:text-base" href="/feed"><i class="ri-home-line"></i> home</a>
     </div>
-    <div class="flex gap-6 text-xl justify-center my-8">
+    <div class="flex gap-6 text-xl md:text-2xl justify-center my-8">
       <div class="post border-b-2">Post</div>
       <div class="story opacity-20">Story</div>
     </div>
     <div class="flex flex-col items-center gap-2">
-      <div class="image w-[25vw] h-[25vw] border-2 border-zinc-800 flex items-center justify-center">
-        <i class="text-5xl font-light ri-image-line"></i>
+      <div class="image w-[25vw] h-[25vw] md:w-[300px] md:h-[300px] border-2 border-zinc-800 flex items-center justify-center">
+        <i class="text-5xl md:text-6xl font-light ri-image-line"></i>
         <img hidden id="preview" class="h-full w-full object-cover" src="" alt="">
       </div>
-      <button id="selectpic" class="text-blue-500 capitalize">select picture</button>
+      <button id="selectpic" class="text-blue-500 capitalize md:text-lg">select picture</button>
     </div>
     
     
-    <form id="uploadform" action="/upload" class="w-full px-6 py-3 mt-10" enctype="multipart/form-data" method="post">
+    <form id="uploadform" action="/upload" class="w-full px-6 md:px-0 py-3 mt-10 md:max-w-xl mx-auto" enctype="multipart/form-data" method="post">
         <input hidden id="post" name="catagory" type="radio" value="post" checked>
         <input hidden id="story" name="catagory" type="radio" value="story">
         <input id="imageinp" hidden type="file" onchange="previewImage(event)" name="image">
-        <textarea id="caption" class="px-2 py-1 w-full bg-zinc-900 border-2 h-20 border-zinc-800 resize-none rounded-md outline-none" placeholder="Write a caption..." name="caption"></textarea>
-        <input class="w-full px-2 py-2 bg-blue-500 rounded-md mb-[10vw]" type="submit" value="Post">
+        <textarea id="caption" class="px-2 py-1 w-full bg-zinc-900 border-2 h-20 md:h-32 border-zinc-800 resize-none rounded-md outline-none md:text-lg" placeholder="Write a caption..." name="caption"></textarea>
+        <input class="w-full px-2 py-2 md:py-3 bg-blue-500 rounded-md mb-[10vw] md:mb-10 md:text-lg md:cursor-pointer hover:bg-blue-600 transition-colors" type="submit" value="Post">
     </form>
   </div>
 
@@ -62,7 +62,7 @@
             if(document.querySelector('.image').querySelector('i')){
               document.querySelector('.image').querySelector('i').remove()
             }
-            document.querySelector('.image').classList.add('w-[70vw]','h-[auto]')
+            document.querySelector('.image').classList.add('w-[70vw]', 'md:w-[500px]', 'h-[auto]')
             preview.removeAttribute('hidden')
 
             const reader = new FileReader();
@@ -79,85 +79,4 @@
     }
 
   </script>
-<% include ./partials/footer.ejs %><% include ./partials/header.ejs %>
-<div class="w-full min-h-screen bg-zinc-900 text-white py-5">
-  <div class="flex justify-between items-center px-4">
-    <a class="text-sm text-blue-500" href="/profile"><i class="ri-arrow-left-s-line"></i> profile</a>
-    <h2 class="leading-none text-sm">Upload Post</h2>
-    <a class="text-sm" href="/feed"><i class="ri-home-line"></i> home</a>
-  </div>
-  <div class="flex gap-6 text-xl justify-center my-8">
-    <div class="post border-b-2">Post</div>
-    <div class="story opacity-20">Story</div>
-  </div>
-  <div class="flex flex-col items-center gap-2">
-    <div class="image w-[25vw] h-[25vw] border-2 border-zinc-800 flex items-center justify-center">
-      <i class="text-5xl font-light ri-image-line"></i>
-      <img hidden id="preview" class="h-full w-full object-cover" src="" alt="">
-    </div>
-    <button id="selectpic" class="text-blue-500 capitalize">select picture</button>
-  </div>
-  
-  
-  <form id="uploadform" action="/upload" class="w-full px-6 py-3 mt-10" enctype="multipart/form-data" method="post">
-      <input hidden id="post" name="catagory" type="radio" value="post" checked>
-      <input hidden id="story" name="catagory" type="radio" value="story">
-      <input id="imageinp" hidden type="file" onchange="previewImage(event)" name="image">
-      <textarea id="caption" class="px-2 py-1 w-full bg-zinc-900 border-2 h-20 border-zinc-800 resize-none rounded-md outline-none" placeholder="Write a caption..." name="caption"></textarea>
-      <input class="w-full px-2 py-2 bg-blue-500 rounded-md mb-[10vw]" type="submit" value="Post">
-  </form>
-</div>
-
-<script>
-  document.querySelector("#selectpic")
-  .addEventListener("click", function(){
-      document.querySelector("#uploadform #imageinp").click();
-  });
-  document.querySelector(".post")
-  .addEventListener("click", function(){
-    document.querySelector("#post").click();
-    document.querySelector(".post").classList.add('border-b-2')
-    document.querySelector(".post").classList.remove('opacity-20')
-    document.querySelector(".story").classList.remove('border-b-2')
-    document.querySelector(".story").classList.add('opacity-20')
-    document.querySelector('#caption').removeAttribute('hidden')
-  });
-  document.querySelector(".story")
-  .addEventListener("click", function(){
-    document.querySelector("#story").click();
-    document.querySelector('#caption').setAttribute('hidden',true)
-    document.querySelector(".story").classList.add('border-b-2')
-    document.querySelector(".post").classList.remove('border-b-2')
-    document.querySelector(".post").classList.add('opacity-20')
-    document.querySelector(".story").classList.remove('opacity-20')
-  });
-
-
-  function previewImage(event) {
-      const input = event.target;
-      const preview = document.getElementById('preview');
-
-      const file = input.files[0];
-
-      if (file) {
-          if(document.querySelector('.image').querySelector('i')){
-            document.querySelector('.image').querySelector('i').remove()
-          }
-          document.querySelector('.image').classList.add('w-[70vw]','h-[auto]')
-          preview.removeAttribute('hidden')
-
-          const reader = new FileReader();
-
-          reader.onload = function (e) {
-              preview.src = e.target.result;
-          };
-
-          reader.readAsDataURL(file);
-      } else {
-          preview.src = ''; // Preview ko clear kare agar koi image select nahi hui
-      }
-
-  }
-
-</script>
 <% include ./partials/footer.ejs %>
