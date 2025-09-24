@@ -8,7 +8,7 @@
     </div>
 
     <div class="story px-3 md:px-8 flex gap-3 overflow-auto mt-5 max-w-6xl mx-auto">
-      <%if(user.stories.length === 0){ %>
+      <%if(user?.stories.length === 0){ %>
         <a href="/upload" class="circle flex-shrink-0">
           <div class="gradient w-[18vw] h-[18vw] md:w-20 md:h-20 relative rounded-full flex items-center justify-center">
             <div class="inner w-[100%] h-[100%] rounded-full overflow-hidden">
@@ -31,7 +31,7 @@
         </a>
       <%}%>
 
-      <% stories.forEach(story =>{ %>
+      <% stories?.forEach(story =>{ %>
         <a href="/story/<%=story.user._id%>" class="circle flex-shrink-0">
           <div class="gradient w-[18vw] h-[18vw] md:w-20 md:h-20 bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
             <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
@@ -49,9 +49,9 @@
         <div class="post mt-10 w-full min-h-[50vh]">
           <div class="title px-4 flex items-center gap-2">
             <div class="w-[9vw] h-[9vw] md:w-12 md:h-12 overflow-hidden rounded-full">
-              <img class="image w-full h-full object-cover" src="/images/uploads/<%= post.user.profileImage %>" alt="">
+              <img class="image w-full h-full object-cover" src="/images/uploads/<%= post.user?.profileImage %>" alt="">
             </div>
-            <a href="/profile/<%=post.user._id%>" class="text-sm md:text-base"><%= post.user.username %></a>
+            <a href="/profile/<%=post.user?._id%>" class="text-sm md:text-base"><%= post.user?.username %></a>
             <h6 class="text-xs md:text-sm opacity-30 mt-1"><%=post.duration%></h6>
           </div>
           <div class="relative w-full h-[auto] mt-4 overflow-hidden">
@@ -59,7 +59,7 @@
           </div>
           <div class="options w-full px-4 flex justify-between items-center text-[1.4rem] md:text-[1.6rem]">
             <div class="flex gap-3 mt-2">
-              <% const likesIds = post.likes.map(like => like.toString()); if(likesIds.includes(user._id.toString())){ %>
+              <% const likesIds = post.likes.map(like => like.toString()); if(likesIds.includes(user?._id.toString())){ %>
                 <i data-postid="<%=post._id%>" class="heart text-red-500 ri-heart-3-fill"></i>
               <% }else{ %>
                 <i data-postid="<%=post._id%>" class="heart ri-heart-3-line"></i>
@@ -75,8 +75,8 @@
           </div>
           <h3 class="likesLength px-4 mt-2 text-sm md:text-base leading-none tracking-tight"><%=post.likes.length%> likes</h3>
           <h2 class="text-white font-light text-sm md:text-base mt-2">
-            <a href="/profile/<%=post.user._id%>" class="font-semibold pl-4 pr-2"><%= post.user.username %></a>
-            <%= post.caption %>
+            <a href="/profile/<%=post.user?._id%>" class="font-semibold pl-4 pr-2"><%= post.user?.username %></a>
+            <%= post?.caption %>
           </h2>
         </div>
       <% }) %>

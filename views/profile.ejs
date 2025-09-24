@@ -18,7 +18,7 @@
       </div>
       <div class="flex justify-between items-center pl-6 pr-[12vw] mt-8 md:px-8 max-w-6xl mx-auto">
         <div class="w-[19vw] h-[19vw] md:w-40 md:h-40 overflow-hidden rounded-full">
-          <img class="w-full h-full object-cover" src="/images/uploads/<%=user.profileImage%>" alt="">
+          <img class="w-full h-full object-cover" src="/images/uploads/<%=user?.profileImage%>" alt="hello">
         </div>
         <div class="stats flex gap-5 md:gap-16 items-center justify-between">
           <div class="flex flex-col items-center justify-center">
@@ -43,8 +43,8 @@
         <a class="px-3 py-2 bg-zinc-800 text-xs md:text-sm rounded-md inline-block" href="/edit">Edit Profile</a>
       </div>
       <div class="posts w-full flex gap-1 md:gap-2 py-2 mt-5 flex-wrap px-0 md:px-8 max-w-6xl mx-auto">
-        <% if(user.posts.length>0){ %>
-          <% user.posts.reverse().forEach(function(post){ %>
+        <% if(user?.posts?.length>0){ %>
+          <% user?.posts?.reverse().forEach(function(post){ %>
             <div class="post w-[32.5%] h-32 md:h-72 overflow-hidden">
               <a href="/post/<%=post._id%>"><img class="h-full w-full object-cover" src="/images/uploads/<%=post.picture%>" alt=""></a>
             </div>

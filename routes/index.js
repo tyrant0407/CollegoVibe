@@ -189,6 +189,7 @@ router.get('/comment/:postId',isLoggedIn, async function(req, res) {
         model: 'Users'
       }
     })
+    
   }
   res.render('comment.ejs', {footer:true,user,post})
 });
@@ -205,7 +206,6 @@ router.post('/commentPost/:postId',isLoggedIn, async function(req, res) {
   await post.save();
 
   res.redirect('back')
-  
 
 });
 
@@ -329,7 +329,8 @@ router.post('/upload',isLoggedIn, upload.single("image") , async function(req, r
     const newStory = await storyModel.create({
       picture:req.file.filename,
       user:user._id
-    })
+    }
+  )
     user.stories.push(newStory._id)
     setTimeout(async() => {
       await storyModel.findByIdAndDelete({_id: newStory._id})
