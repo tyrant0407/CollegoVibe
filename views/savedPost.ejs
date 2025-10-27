@@ -5,100 +5,115 @@
       <img class="w-1/4 md:w-32" src="/images/logo.png" alt="">
     </div>
     <div class="posts mb-20 md:max-w-2xl lg:max-w-3xl mx-auto">
-      <% if(user.saved.length === 0){%>
+      <% if(user.saved.length===0){%>
         <h1 class="flex justify-center items-center h-[80vh] text-2xl">No saved post</h1>
-      <%}else{%>
-      <%user.saved.reverse().forEach(function(post){ %>
-        <div class="post mt-10 w-full min-h-[50vh]">
-          <div class="title px-4 flex items-center gap-2">
-            <div class="w-[9vw] h-[9vw] md:w-12 md:h-12 overflow-hidden rounded-full">
-              <img class="image w-full h-full object-cover" src="/images/uploads/<%= post.user.profileImage %>" alt="">
+        <%}else{%>
+          <%user.saved.reverse().forEach(function(post){ %>
+            <div class="post mt-10 w-full min-h-[50vh]">
+              <div class="title px-4 flex items-center gap-2">
+                <div class="w-[9vw] h-[9vw] md:w-12 md:h-12 overflow-hidden rounded-full">
+                  <img class="image w-full h-full object-cover"
+                    src="<%=getImageUrl(post.user.profileImage, 'profile')%>" alt="">
+                </div>
+                <a href="/profile/<%=post.user._id%>" class="text-sm">
+                  <%= post.user.username %>
+                </a>
+                <h6 class="text-xs opacity-30 mt-1">
+                  <%=post.duration%>
+                </h6>
+              </div>
+              <div class="relative w-full h-96 md:h-[32rem] mt-4 overflow-hidden">
+                <img class="image w-full h-full object-cover" src="<%=getImageUrl(post.picture)%>" alt="">
+              </div>
+              <div class="options w-full px-4 flex justify-between items-center text-[1.4rem]">
+                <div class="flex gap-3 mt-2">
+                  <% const likesIds=post.likes.map(like=> like.toString()); if(likesIds.includes(user._id.toString())){
+                    %>
+                    <i data-postid="<%=post._id%>" class="heart text-red-500 ri-heart-3-fill"></i>
+                    <% }else{ %>
+                      <i data-postid="<%=post._id%>" class="heart ri-heart-3-line"></i>
+                      <% } %>
+                        <a href="/comment/<%=post._id%>"><i class="ri-chat-3-line"></i></a>
+                        <i class="ri-share-circle-line"></i>
+                </div>
+                <i data-postid="<%=post._id%>" class="save ri-bookmark-fill"></i>
+
+              </div>
+              <h3 class="likesLength px-4 mt-2 text-sm leading-none tracking-tight">
+                <%=post.likes.length%> likes
+              </h3>
+              <h2 class="text-white font-light text-sm mt-2"><a href="/profile/<%=post.user._id%>"
+                  class="font-semibold pl-4 pr-2">
+                  <%= post.user.username %>
+                </a>
+                <%= post.caption %>
+              </h2>
             </div>
-            <a href="/profile/<%=post.user._id%>" class="text-sm"><%= post.user.username %></a>
-            <h6 class="text-xs opacity-30 mt-1"><%=post.duration%></h6>
-          </div>
-          <div class="relative w-full h-96 md:h-[32rem] mt-4 overflow-hidden">
-            <img class="image w-full h-full object-cover" src="/images/uploads/<%= post.picture %>" alt="">
-          </div>
-          <div class="options w-full px-4 flex justify-between items-center text-[1.4rem]">
-            <div class="flex gap-3 mt-2">
-            <% const likesIds = post.likes.map(like => like.toString()); if(likesIds.includes(user._id.toString())){ %>
-                <i data-postid="<%=post._id%>" class="heart text-red-500 ri-heart-3-fill"></i>
-                <% }else{ %>
-                  <i data-postid="<%=post._id%>" class="heart ri-heart-3-line"></i>
-            <% } %>
-              <a href="/comment/<%=post._id%>"><i class="ri-chat-3-line"></i></a>
-              <i class="ri-share-circle-line"></i>
-            </div>
-              <i data-postid="<%=post._id%>" class="save ri-bookmark-fill"></i>
-            
-          </div>
-          <h3 class="likesLength px-4 mt-2 text-sm leading-none tracking-tight"><%=post.likes.length%> likes</h3>
-          <h2 class="text-white font-light text-sm mt-2"><a href="/profile/<%=post.user._id%>" class="font-semibold pl-4 pr-2"><%= post.user.username %></a><%= post.caption %></h2>
-        </div>
-      <% }) %>
-      <% } %>
+            <% }) %>
+              <% } %>
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
 
     document.querySelector('.posts')
-    .addEventListener('click',function(dets){
+      .addEventListener('click', function (dets) {
 
-      if(dets.target.classList.contains('heart')){
-        var heart = dets.target
+        if (dets.target.classList.contains('heart')) {
+          var heart = dets.target
           heart.classList.toggle('ri-heart-3-line')
           heart.classList.toggle('ri-heart-3-fill')
           heart.classList.toggle('text-red-500')
           fetch(`/like/${heart.dataset.postid}`)
-          .then(raw => raw.json())
-          .then(data => {
-            dets.target.parentNode.parentNode.parentNode.querySelector('.likesLength').textContent = data.likes.length + ' likes';
+            .then(raw => raw.json())
+            .then(data => {
+              dets.target.parentNode.parentNode.parentNode.querySelector('.likesLength').textContent = data.likes.length + ' likes';
+            })
+        }
+
+        if (dets.target.classList.contains('image')) {
+          dets.target.parentNode.parentNode.querySelector('.heart').click()
+          var i = document.createElement('i')
+          i.classList.add('ri-heart-3-fill', 'scale-[2]', 'absolute', 'translate-y-[-50%]', 'translate-x-[-50%]', 'left-[50%]', 'top-[60%]')
+          dets.target.parentNode.appendChild(i)
+          gsap.from(i, {
+            scale: .5,
+            y: -50,
+            ease: Power4,
+            duration: .3
           })
-      }
+          gsap.to(i, {
+            opacity: .8,
+            y: -50,
+            scale: 5,
+            delay: .2,
+            ease: Power4,
+            duration: .5,
+            color: 'red',
+            onComplete: function () {
+              i.remove()
+            }
+          })
+        }
 
-      if(dets.target.classList.contains('image')){
-        dets.target.parentNode.parentNode.querySelector('.heart').click()
-        var i = document.createElement('i')
-        i.classList.add('ri-heart-3-fill','scale-[2]','absolute','translate-y-[-50%]','translate-x-[-50%]','left-[50%]','top-[60%]')
-        dets.target.parentNode.appendChild(i)
-        gsap.from(i,{
-          scale:.5,
-          y:-50,
-          ease:Power4,
-          duration:.3
-        })
-        gsap.to(i,{
-          opacity:.8,
-          y:-50,
-          scale:5,
-          delay:.2,
-          ease:Power4,
-          duration:.5,
-          color:'red',
-          onComplete:function(){
-            i.remove()
-          }
-        })
-      }
-
-      if(dets.target.classList.contains('save')){
-        var save = dets.target
-        save.classList.toggle('ri-bookmark-line')
-        save.classList.toggle('ri-bookmark-fill')
-        fetch(`/save/${save.dataset.postid}`)
-      }
-    })
+        if (dets.target.classList.contains('save')) {
+          var save = dets.target
+          save.classList.toggle('ri-bookmark-line')
+          save.classList.toggle('ri-bookmark-fill')
+          fetch(`/save/${save.dataset.postid}`)
+        }
+      })
 
 
     document.querySelector('.story')
-    .addEventListener('click',dets =>{
-      if(dets.target.classList.contains('image')){
-        
-      }
-    })
+      .addEventListener('click', dets => {
+        if (dets.target.classList.contains('image')) {
+
+        }
+      })
 
 
 

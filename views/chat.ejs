@@ -6,7 +6,8 @@
                     <i class="ri-arrow-drop-left-line text-3xl text-blue-500"></i>
                 </a>
                 <a href="/profile/<%=oppositeUser._id%>" class="flex items-center gap-2">
-                    <img src="/images/uploads/<%=oppositeUser.profileImage%>" class="w-[10%] md:w-12 rounded-full" alt="">
+                    <img src="<%=getImageUrl(oppositeUser.profileImage, 'profile')%>"
+                        class="w-[10%] md:w-12 rounded-full" alt="">
                     <div class="text-lg">
                         <%=oppositeUser.username%>
                     </div>
@@ -21,10 +22,11 @@
                 </div>
 
                 <div class="inputArea-0 pl-1 border-zinc-600 w-full h-[6vh] flex items-center justify-around gap-2">
-                    <input class="bg-transparent w-[80%] md:w-[90%] h-[70%] border-[1px] rounded-md border-zinc-600 focus:border-zinc-400 outline-none px-2"
-                        type="text" placeholder="Enter a message..." id=
-                        "msgInp">
-                    <button class="bg-blue-400 rounded-lg px-3 py-1 hover:bg-blue-500 transition-colors" onclick="sendMsg()">Send</button>
+                    <input
+                        class="bg-transparent w-[80%] md:w-[90%] h-[70%] border-[1px] rounded-md border-zinc-600 focus:border-zinc-400 outline-none px-2"
+                        type="text" placeholder="Enter a message..." id="msgInp">
+                    <button class="bg-blue-400 rounded-lg px-3 py-1 hover:bg-blue-500 transition-colors"
+                        onclick="sendMsg()">Send</button>
                 </div>
             </div>
 
@@ -86,7 +88,7 @@
                     if (messageObj.sender === loggedInUser) {
                         appendOutMsg(messageObj.message)
                     }
-                    else{
+                    else {
                         appendInMsg(messageObj.message)
                     }
                 })

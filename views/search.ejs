@@ -1,27 +1,32 @@
 <% include ./partials/header.ejs %>
-  <div class="w-full min-h-screen bg-zinc-900 px-4 md:px-10 lg:px-20 py-5">
-    <div class="border-2 border-zinc-800 flex items-center justify-between px-2 py-1 rounded-md md:max-w-xl mx-auto">
-        <i class="text-white ri-search-line"></i>
-        <input id="searchInp" class="ml-1 w-full bg-zinc-900 outline-none text-zinc-400" type="text" placeholder="search username">
+    <div class="w-full min-h-screen bg-zinc-900 px-4 md:px-10 lg:px-20 py-5">
+        <div
+            class="border-2 border-zinc-800 flex items-center justify-between px-2 py-1 rounded-md md:max-w-xl mx-auto">
+            <i class="text-white ri-search-line"></i>
+            <input id="searchInp" class="ml-1 w-full bg-zinc-900 outline-none text-zinc-400" type="text"
+                placeholder="search username">
+        </div>
+        <div class="users md:max-w-xl mx-auto">
+            <!-- Search results will be populated here -->
+        </div>
     </div>
-    <div class="users md:max-w-xl mx-auto">
-        <!-- Search results will be populated here -->
-    </div>
-  </div>
 
-  <script>
-    var search = document.querySelector('#searchInp')
-    search.addEventListener('input',function(){
-        if(search.value !== ""){
-            fetch(`/search/${search.value}`)
-        .then(raw => raw.json())
-        .then(users => {
-            var structure = ""
-            users.forEach(user => {
-                structure+=`<a href="/profile/${user._id}" class="outline-none">
+    <script>
+        var search = document.querySelector('#searchInp')
+        search.addEventListener('input', function () {
+            if (search.value !== "") {
+                fetch(`/search/${search.value}`)
+                    .then(raw => raw.json())
+                    .then(users => {
+                        var structure = ""
+                        users.forEach(user => {
+                            const imageUrl = user.profileImage && user.profileImage.startsWith('http')
+                                ? user.profileImage
+                                : `/images/uploads/${user.profileImage}`;
+                            structure += `<a href="/profile/${user._id}" class="outline-none">
                     <div class="text-white flex items-center gap-2 mt-5">
                         <div class="image w-[11vw] h-[11vw] md:w-12 md:h-12 rounded-full overflow-hidden">
-                            <img class="w-full h-full object-cover" src="/images/uploads/${user.profileImage}" alt="">
+                            <img class="w-full h-full object-cover" src="${imageUrl}" alt="">
                         </div>
                         <div class="text">
                             <h3 class="md:text-lg">${user.username}</h3>
@@ -29,10 +34,10 @@
                         </div>
                     </div>            
                     </a>`
-            });
-            document.querySelector('.users').innerHTML = structure;
+                        });
+                        document.querySelector('.users').innerHTML = structure;
+                    })
+            }
         })
-        }
-    })
-  </script>
-<% include ./partials/footer.ejs %>
+    </script>
+    <% include ./partials/footer.ejs %>

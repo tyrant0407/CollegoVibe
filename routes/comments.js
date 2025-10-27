@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const commentSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference to the User model
+        ref: 'Users', // Reference to the Users model (matching your user model name)
         required: true
     },
     comment: {
@@ -15,7 +15,7 @@ const commentSchema = new mongoose.Schema({
     replies: [{
         user: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User', // Reference to the User model
+            ref: 'Users', // Reference to the Users model
             required: true
         },
         comment: {
@@ -26,9 +26,12 @@ const commentSchema = new mongoose.Schema({
         replies: [this] // Nested replies, can go on recursively
     }],
     likes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User' // Reference to the User model
-    }]
+        type: String // Store usernames as strings to match your existing like system
+    }],
+    date: {
+        type: Date,
+        default: Date.now
+    }
 }, {
     timestamps: true // Automatically add createdAt and updatedAt fields
 });
@@ -36,7 +39,7 @@ const commentSchema = new mongoose.Schema({
 // Add compound index for better query performance
 commentSchema.index({ user: 1, createdAt: -1 });
 
-// Define the Comment model
-const Comment = mongoose.model('Comment', commentSchema);
+// Define the Comment model with the correct name to match posts reference
+const Comment = mongoose.model('Comments', commentSchema);
 
 module.exports = Comment;

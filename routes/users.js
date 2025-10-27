@@ -5,7 +5,7 @@ const passportLocalMongoose = require('passport-local-mongoose');
 mongoose.connect(process.env.DBURL)
   .then(() => console.log('Connected to the database'))
   .catch(err => console.error('Database connection error:', err));
-  
+
 // Define the user schema with validations and indexes
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String }, // Password will be automatically hashed by passport-local-mongoose
   bio: { type: String },
   profileImage: { type: String, default: 'userImage.webp' },
+  profileImageId: { type: String }, // ImageKit file ID for profile image
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Posts' }],
   saved: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Posts' }],
   stories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Storys' }],

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const postSchema = new mongoose.Schema({
   caption: { type: String, required: false },
   picture: { type: String, required: true },
+  pictureId: { type: String }, // ImageKit file ID for the post image
   date: { type: Date, default: Date.now },
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comments' }],
@@ -24,7 +25,7 @@ postSchema.post('save', (error, doc, next) => {
 
 // Define virtual properties for additional functionality if needed
 // For example, a virtual property to get the total number of likes
-postSchema.virtual('totalLikes').get(function() {
+postSchema.virtual('totalLikes').get(function () {
   return this.likes.length;
 });
 
